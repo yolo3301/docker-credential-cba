@@ -81,55 +81,19 @@ func (ch *gcrCredHelper) List() (map[string]string, error) {
 
 // Add adds new third-party credentials to the keychain.
 func (ch *gcrCredHelper) Add(creds *credentials.Credentials) error {
-	serverURL := creds.ServerURL
-	if isAGCRHostname(serverURL) {
-		errStr := "this operation is unsupported for GCR, please see docker-credential-gcr documentation for supported login methods. " +
-			"'gcloud docker' is unnecessary when using docker-credential-gcr, use 'docker' instead."
-		return helperErr(errStr, nil)
-	}
-	if err := ch.store.SetOtherCreds(creds); err != nil {
-		return helperErr("could not store 3p credentials for "+serverURL, err)
-	}
-	return nil
+	errStr := "this credential helper only returns access token"
+	return helperErr(errStr, nil)
 }
 
 // Delete removes third-party credentials from the store.
 func (ch *gcrCredHelper) Delete(serverURL string) error {
-	if isAGCRHostname(serverURL) {
-		return helperErr("delete is unimplemented for GCR: "+serverURL, nil)
-	}
-	if err := ch.store.DeleteOtherCreds(serverURL); err != nil {
-		return helperErr("could not delete 3p credentials for "+serverURL, err)
-	}
-	return nil
+	return helperErr("delete is unimplemented", nil)
 }
 
 // Get returns the username and secret to use for a given registry server URL.
 func (ch *gcrCredHelper) Get(serverURL string) (string, string, error) {
-	// If this is a GCR hostname, return GCR's credentials.
-	if isAGCRHostname(serverURL) {
-		return ch.gcrCreds()
-	}
-
-	// Next, attempt to retrieve credentials for another repository.
-	creds, err := ch.store.GetOtherCreds(serverURL)
-	if err != nil {
-		// Swallow not found error, return everything else.
-		if !credentials.IsErrCredentialsNotFound(err) {
-			return "", "", helperErr("could not retrieve 3p credentials for "+serverURL, err)
-		}
-	} else {
-		// If 3p creds are found, return them.
-		return creds.Username, creds.Secret, nil
-	}
-
-	// Finally, if we're configured to return GCR's access token rather
-	// than a not found error, do so. Otherwise, return the not found error
-	// expected by "github.com/docker/docker-credential-helpers/credentials"
-	if ch.userCfg.DefaultToGCRAccessToken() {
-		return ch.gcrCreds()
-	}
-	return "", "", credentials.NewErrCredentialsNotFound()
+	// always returns gcr cred.
+	return ch.gcrCreds()
 }
 
 func (ch *gcrCredHelper) gcrCreds() (string, string, error) {
