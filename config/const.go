@@ -26,12 +26,12 @@ const (
 	// GCRCredHelperClientID is the client_id to be used when performing the
 	// OAuth2 Authorization Code grant flow.
 	// See https://developers.google.com/identity/protocols/OAuth2InstalledApp
-	GCRCredHelperClientID = "99426463878-o7n0bshgue20tdpm25q4at0vs2mr4utq.apps.googleusercontent.com"
+	GCRCredHelperClientID = "763885615681-d1r0jjt18841hu3mtnqlugrc3716bqgv.apps.googleusercontent.com"
 
 	// GCRCredHelperClientNotSoSecret is the client_secret to be used when
 	// performing the OAuth2 Authorization Code grant flow.
 	// See https://developers.google.com/identity/protocols/OAuth2InstalledApp
-	GCRCredHelperClientNotSoSecret = "HpVi8cnKx8AAkddzaNrSWmS8"
+	GCRCredHelperClientNotSoSecret = "ZKF4eTQoahS4_q4sIadiep-H"
 
 	// From http://semver.org/
 	// MAJOR version when you make incompatible API changes,
